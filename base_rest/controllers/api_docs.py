@@ -111,3 +111,78 @@ class ApiDocsController(Controller):
     def _get_services_specs(self, path):
         services_registry = _rest_services_databases.get(request.env.cr.dbname, {})
         return services_registry["/" + path + "/"]
+
+    @route('/api-docs', auth='public')
+    def api_docs(self, **kwargs):
+        """Render the Swagger UI page"""
+        values = {
+            'swagger_settings': self._get_api_urls()
+        }
+        return request.render('base_rest.openapi', values)
+
+    @route('/api/demo/swagger.json', auth='public')
+    def demo_api_docs(self, **kwargs):
+        """Return OpenAPI spec for demo API"""
+        return request.make_json_response({
+            'openapi': '3.0.0',
+            'info': {
+                'title': 'Demo API',
+                'version': '1.0.0',
+            },
+            'paths': {
+                '/api/demo/hello': {
+                    'get': {
+                        'summary': 'Hello World',
+                        'responses': {
+                            '200': {
+                                'description': 'Successful response',
+                                'content': {
+                                    'application/json': {
+                                        'schema': {
+                                            'type': 'object',
+                                            'properties': {
+                                                'message': {
+                                                    'type': 'string'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                '/api/demo/hello/{name}': {
+                    'get': {
+                        'summary': 'Hello Name',
+                        'parameters': [
+                            {
+                                'name': 'name',
+                                'in': 'path',
+                                'required': True,
+                                'schema': {
+                                    'type': 'string'
+                                }
+                            }
+                        ],
+                        'responses': {
+                            '200': {
+                                'description': 'Successful response',
+                                'content': {
+                                    'application/json': {
+                                        'schema': {
+                                            'type': 'object',
+                                            'properties': {
+                                                'message': {
+                                                    'type': 'string'
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })

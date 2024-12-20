@@ -6,7 +6,7 @@
     "summary": """
         Develop your own high level REST APIs for Odoo thanks to this addon.
         """,
-    "version": "16.0.1.0.2",
+    "version": "17.0.1.0.0",
     "development_status": "Beta",
     "license": "LGPL-3",
     "author": "ACSONE SA/NV, " "Odoo Community Association (OCA)",
@@ -14,14 +14,21 @@
     "website": "https://github.com/OCA/rest-framework",
     "depends": ["component", "web"],
     "data": [
+        "views/web_assets.xml",
         "views/openapi_template.xml",
         "views/base_rest_view.xml",
     ],
     "assets": {
-        "web.assets_frontend": [
-            "base_rest/static/src/scss/base_rest.scss",
-            "base_rest/static/src/js/swagger_ui.js",
-            "base_rest/static/src/js/swagger.js",
+        "web.assets_common": [
+            # Swagger UI library
+            "/base_rest/static/lib/swagger-ui-3.51.1/swagger-ui-bundle.js",
+            "/base_rest/static/lib/swagger-ui-3.51.1/swagger-ui-standalone-preset.js",
+            "/base_rest/static/lib/swagger-ui-3.51.1/swagger-ui.css",
+        ],
+        "base_rest.assets_swagger": [
+            "/base_rest/static/src/scss/base_rest.scss",
+            "/base_rest/static/src/js/swagger_ui.js",
+            "/base_rest/static/src/js/swagger.js",
         ],
     },
     "external_dependencies": {
@@ -34,4 +41,5 @@
         ]
     },
     "installable": True,
+    "application": True,
 }
